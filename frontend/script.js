@@ -13,7 +13,7 @@ async function loadTasks() {
         const response = await fetch(`${API}/api/tasks`);
 
         if (!response.ok) {
-            throw new Error(`HTTP ${response.status}`);
+            throw new Error(`HTTPS ${response.status}`);
         }
 
         const tasks = await response.json();
