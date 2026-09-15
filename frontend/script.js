@@ -1,4 +1,4 @@
-const API = "http://18.61.174.104";
+const API = "";
 
 // ===============================
 // LOAD ALL TASKS
