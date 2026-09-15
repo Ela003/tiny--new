@@ -1,12 +1,12 @@
-# Tiny web
+# End to end  Tiny web
 
-- create a front-code = html, css, js
-- create a back-end code = server.js, .env , .gitignore
-- create a Database = postgres
 
-## Deploy using Coolify
+## Table of Content
 
--  publish the code using github
--  Deploy a github repo using coolify
--  Start the server useing node
-   
+- Overviewi
+- tech
+- 
+  
+## Overview
+
+Its is task updating website , user can edit ,delete, add task in the web. Its a full stack web connection of front-end , backend , Database
