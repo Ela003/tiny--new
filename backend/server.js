@@ -152,5 +152,5 @@ app.put("/api/tasks/:id", async (req, res) => {
 // START SERVER
 // ===============================
 app.listen(3002, "0.0.0.0", () => {
-  console.log("API running on port 3000");
+  console.log("API running on port 3002");
 });
