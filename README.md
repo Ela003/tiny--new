@@ -2,12 +2,28 @@
 
 A simple fullstack task mamnagement  web application .
 
-## Table of Content
+ ## The application user to :
 
-- Overviewi
-- tech
-- 
+- View task
+- Add task
+- Delete task
+- Update task
   
 ## Overview
 
-Its is task updating website , user can edit ,delete, add task in the web. Its a full stack web connection of front-end , backend , Database
+Its is task updating website , user can edit ,delete, add task in the web. Its a full stack web connection of front-end , backend , Database .
+
+### Front-end 
+
+* HTML
+* CSS
+* JS
+
+### Backend 
+
+* Node.js
+* Express.js
+
+### Database
+  
+* Postgres
