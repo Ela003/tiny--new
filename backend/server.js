@@ -1,5 +1,8 @@
 require("dotenv").config();
 
+const fs = require("fs");
+const https = require("https");
+const path = require("path");
 const express = require("express");
 const cors = require("cors");
 const { Pool } = require("pg");
@@ -201,6 +204,12 @@ app.put("/api/tasks/:id", async (req, res) => {
 // ===============================
 // START SERVER
 // ===============================
-app.listen(3002, "0.0.0.0", () => {
-  console.log("API running on port 3002");
+const certificatePath = path.join(__dirname, "..", "certs", "localhost.pfx");
+const httpsOptions = {
+  pfx: fs.readFileSync(certificatePath),
+  passphrase: process.env.LOCAL_HTTPS_PASSWORD || "local-dev",
+};
+
+https.createServer(httpsOptions, app).listen(3002, "0.0.0.0", () => {
+  console.log("HTTPS API running on port 3002");
 });

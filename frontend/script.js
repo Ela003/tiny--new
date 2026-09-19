@@ -1,6 +1,6 @@
 const API = ["localhost", "127.0.0.1"].includes(window.location.hostname)
-    ? "http://127.0.0.1:3002"
-    : "http://18.61.174.104:3002";
+    ? `${window.location.protocol}//${window.location.hostname}:3002`
+    : "";
 
 // ===============================
 // LOAD ALL TASKS
