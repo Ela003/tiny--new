@@ -18,11 +18,26 @@ const pool = new Pool({
   port: process.env.DB_PORT,
 });
 
+const hasDatabaseConfig = [
+  process.env.DB_USER,
+  process.env.DB_HOST,
+  process.env.DB_NAME,
+  process.env.DB_PASSWORD,
+  process.env.DB_PORT,
+].every(Boolean);
+
+let memoryTasks = [];
+let nextTaskId = 1;
+
 // ===============================
 // GET ALL TASKS
 // ===============================
 app.get("/api/tasks", async (req, res) => {
   try {
+    if (!hasDatabaseConfig) {
+      return res.json(memoryTasks);
+    }
+
     const result = await pool.query(
       "SELECT * FROM tasks ORDER BY id DESC"
     );
@@ -52,6 +67,12 @@ app.post("/api/tasks", async (req, res) => {
       });
     }
 
+    if (!hasDatabaseConfig) {
+      const task = { id: nextTaskId++, title: title.trim() };
+      memoryTasks.unshift(task);
+      return res.status(201).json(task);
+    }
+
     const result = await pool.query(
       "INSERT INTO tasks (title) VALUES ($1) RETURNING *",
       [title.trim()]
@@ -77,6 +98,22 @@ app.delete("/api/tasks/:id", async (req, res) => {
     const { id } = req.params;
 
     console.log("Deleting task ID:", id);
+
+    if (!hasDatabaseConfig) {
+      const taskIndex = memoryTasks.findIndex((task) => task.id === Number(id));
+
+      if (taskIndex === -1) {
+        return res.status(404).json({
+          error: "Task not found"
+        });
+      }
+
+      const [task] = memoryTasks.splice(taskIndex, 1);
+      return res.json({
+        message: "Task deleted successfully",
+        task
+      });
+    }
 
     const result = await pool.query(
       "DELETE FROM tasks WHERE id = $1 RETURNING *",
@@ -121,6 +158,19 @@ app.put("/api/tasks/:id", async (req, res) => {
       return res.status(400).json({
         error: "Task title is required"
       });
+    }
+
+    if (!hasDatabaseConfig) {
+      const task = memoryTasks.find((item) => item.id === Number(id));
+
+      if (!task) {
+        return res.status(404).json({
+          error: "Task not found"
+        });
+      }
+
+      task.title = title.trim();
+      return res.json(task);
     }
 
     const result = await pool.query(
